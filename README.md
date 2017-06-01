@@ -69,41 +69,8 @@ function chain(promise, func) {
 This example is designed to run in Node and uses Felix Geisendörfer's [mysql] (https://www.npmjs.com/package/mysql) module.
 
 ```javascript
-var mysql = require('mysql')
-
-function chain(promise, func) {
-  if (! promise) {
-    promise = new Promise(function(next) {
-      next();
-    });
-  }
-  return new Proxy({}, {
-    get: function(state, key, proxy) {
-      if (key === '') {
-        return promise;
-      } else {
-        return function() {
-          var callArgs = Array.prototype.slice.call(arguments);
-          promise = promise.then(function() {
-            var prevArgs = Array.prototype.slice.call(arguments);
-            return new Promise(function(next) {
-              func({
-                next: next,
-                prevArgs: prevArgs,
-                callArgs: callArgs,
-                key: key,
-                state: state,
-                promise: promise,
-                proxy: proxy
-              });
-            });
-          });
-          return proxy;
-        };
-      }
-    }
-  });
-};
+var chain = require('proxy-promise-chain');
+var mysql = require('mysql');
 
 /* Setting up mysql handler that will use a chainable async interface */
 
@@ -176,42 +143,10 @@ var handler = mysqlhandler({
 
 ##Example: Using the chain with async/await
 
-The chain can be used with `async`/`await` (or with generators). Reading the empty string property from the proxy returned by a chain returns the promise internal to the chain. This is designed so that the promise can then be given to an `await` statement (or, if using a generator, to a `yield` statement
+The chain can be used with `async`/`await` (or with generators). Reading the empty string property from the proxy returned by a chain returns the promise internal to the chain. This is designed so that the promise can then be given to an `await` statement (or, if using a generator, to a `yield` statement. [Note: `async`/`await` is only available on the more recent Node versions.]
 
 ```javascript
-function chain(promise, func) {
-  if (! promise) {
-    promise = new Promise(function(next) {
-      next();
-    });
-  }
-  return new Proxy({}, {
-    get: function(state, key, proxy) {
-      if (key === '') {
-        return promise;
-      } else {
-        return function() {
-          var callArgs = Array.prototype.slice.call(arguments);
-          promise = promise.then(function() {
-            var prevArgs = Array.prototype.slice.call(arguments);
-            return new Promise(function(next) {
-              func({
-                next: next,
-                prevArgs: prevArgs,
-                callArgs: callArgs,
-                key: key,
-                state: state,
-                promise: promise,
-                proxy: proxy
-              });
-            });
-          });
-          return proxy;
-        };
-      }
-    }
-  });
-};
+var chain = require('proxy-promise-chain');
 
 var p = chain(null, function(args) {
   var key = args.key;
