@@ -1,6 +1,6 @@
 {
   "name": "proxy-promise-chain",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Chainable async interfaces using promises and proxies",
   "main": "index.js",
   "scripts": {
