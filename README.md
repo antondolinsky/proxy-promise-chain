@@ -102,7 +102,7 @@ var mysqlhandler = (function() {
       var cb = args.callArgs[0];
       cb(args.next, args.state.queryResults);
     }
-  }
+  };
   return function(setupArgs) {
     return chain(null, function(args) {
       methods[args.key](args)
