@@ -1,4 +1,4 @@
-module.exports = function(promise, func) {
+module.exports = function(promise, func, returnValueHandler) {
   if (! promise) {
     promise = new Promise(function(next) {
       next();
@@ -25,7 +25,22 @@ module.exports = function(promise, func) {
               });
             });
           });
-          return proxy;
+          var rvhResult;
+          if (returnValueHandler) {
+            rvhResult = returnValueHandler({
+              prevArgs: prevArgs,
+              callArgs: callArgs,
+              key: key,
+              state: state,
+              promise: promise,
+              proxy: proxy
+            });
+          }
+          if (rvhResult) {
+            return rvhResult.returnValue;
+          } else {
+            return proxy;
+          }
         };
       }
     }

@@ -36,7 +36,7 @@ The following code aims to achieve this by wrapping a Promise in an interface th
 ##Main code
 
 ```javascript
-function chain(promise, func) {
+function chain(promise, func, returnValueHandler) {
   if (! promise) {
     promise = new Promise(function(next) {
       next();
@@ -63,7 +63,22 @@ function chain(promise, func) {
               });
             });
           });
-          return proxy;
+          var rvhResult;
+          if (returnValueHandler) {
+            rvhResult = returnValueHandler({
+              prevArgs: prevArgs,
+              callArgs: callArgs,
+              key: key,
+              state: state,
+              promise: promise,
+              proxy: proxy
+            });
+          }
+          if (rvhResult) {
+            return rvhResult.returnValue;
+          } else {
+            return proxy;
+          }
         };
       }
     }
