@@ -66,7 +66,7 @@ function chain(promise, func) {
 
 ##Example: MySQL interface
 
-This example is designed to run in Node and uses Felix Geisendörfer's [mysql] (https://www.npmjs.com/package/mysql) module.
+This example is designed to run in Node and uses Felix Geisendörfer's [mysql](https://www.npmjs.com/package/mysql) module.
 
 ```javascript
 var chain = require('proxy-promise-chain');
