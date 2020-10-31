@@ -1,11 +1,11 @@
-#Chainable Async Interfaces Using Promises and Proxies
+# Chainable Async Interfaces Using Promises and Proxies
 
-##Install
+## Install
 ```
 $ npm install proxy-promise-chain
 ```
 
-##The objective
+## The objective
 
 Sometimes it is convenient to be able to use the chaining style of code that is, for example, common in jQuery:  
 ```javascript
@@ -33,7 +33,7 @@ makechain(...)
 ```
 The following code aims to achieve this by wrapping a Promise in an interface that returns a Proxy. (So, of course, a Promise and Proxy-supporting JS environment is required.)  
 
-##Main code
+## Main code
 
 ```javascript
 function chain(promise, func, returnValueHandler) {
@@ -86,9 +86,9 @@ function chain(promise, func, returnValueHandler) {
 };
 ```
 
-##How it works
+## How it works
 
-##Example: MySQL interface
+## Example: MySQL interface
 
 This example is designed to run in Node and uses Felix Geisendörfer's [mysql](https://www.npmjs.com/package/mysql) module.
 
@@ -168,9 +168,9 @@ var handler = mysqlhandler({
 });
 ```
 
-##Example: Using the chain with async/await
+## Example: Using the chain with async/await
 
-The chain can be used with `async`/`await` (or with generators). Reading the empty string property from the proxy returned by a chain returns the promise internal to the chain. This is designed so that the promise can then be given to an `await` statement (or, if using a generator, to a `yield` statement. [Note: `async`/`await` is only available on the more recent Node versions.]
+The chain can be used with `async`/`await` (or with generators). Reading the empty string property from the proxy returned by a chain returns the promise internal to the chain. This is designed so that the promise can then be given to an `await` statement (or, if using a generator, to a `yield` statement).
 
 ```javascript
 var chain = require('proxy-promise-chain');
